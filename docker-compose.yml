@@ -18,7 +18,7 @@ services:
     depends_on:
       - api
     expose:
-      - "3000"
+      - "8080"
 
   nginx:
     build: ./src/sys/nginx
