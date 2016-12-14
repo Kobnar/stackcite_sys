@@ -82,22 +82,22 @@ def start_docker():
 
 def clone_db():
     mkdir('~/src')
-    run('git clone {} ~/src/db'.format(_DB_REPO))
+    run('git clone -b dev {} ~/src/db'.format(_DB_REPO))
 
 
 def clone_api():
     mkdir('~/src')
-    run('git clone {} ~/src/api'.format(_API_REPO))
+    run('git clone -b dev {} ~/src/api'.format(_API_REPO))
 
 
 def clone_ux():
     mkdir('~/src')
-    run('git clone {} ~/src/ux'.format(_UX_REPO))
+    run('git clone -b dev {} ~/src/ux'.format(_UX_REPO))
 
 
 def clone_sys():
     mkdir('~/src')
-    run('git clone {} ~/src/sys'.format(_SYS_REPO))
+    run('git clone -b dev {} ~/src/sys'.format(_SYS_REPO))
     run('pip install ~/src/sys/requirements.txt')
     run('ln -s ~/src/sys/docker-compose.yml ~/docker-compose.yml')
 
