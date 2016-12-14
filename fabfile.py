@@ -136,5 +136,9 @@ def bring_down():
     run('sudo docker-compose down')
 
 
+def force_down():
+    run('sudo docker rm $(sudo docker ps -a -q)')
+
+
 def clean_all():
     run('rm -Rfv *')
