@@ -85,11 +85,11 @@ def start_docker():
 # Container management
 
 
-def _link_docker_compose_config(source):
+def _copy_docker_compose_config(source):
     destination = '~/docker-compose.yml'
     if exists(destination):
         run('rm {}'.format(destination))
-    run('ln -s {} ~/docker-compose.yml'.format(source))
+    run('cp {} ~/docker-compose.yml'.format(source))
 
 
 def _get_repo(url, dest):
@@ -114,7 +114,7 @@ def get_ux():
 
 def get_sys():
     _get_repo(_SYS_URI, 'sys')
-    _link_docker_compose_config('~/src/sys/docker-compose.yml')
+    _copy_docker_compose_config('~/src/sys/docker-compose.yml')
 
 
 def get_all():
