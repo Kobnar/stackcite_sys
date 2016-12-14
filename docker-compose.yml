@@ -10,21 +10,23 @@ services:
     depends_on:
       - mongo
 
-#  ux:
-#    build: ./src/ux
-#    image: stackcite/ux
-#    depends_on:
-#      - stackcite_api
+  ux:
+    build: ./src/ux
+    image: stackcite/ux
+    depends_on:
+      - stackcite_api
+    environment:
+      - PORT=8080
 
   nginx:
     build: ./src/sys/nginx
     image: stackcite/nginx
     depends_on:
       - api
-#      - ux
+      - ux
     links:
       - api:api
-#      - ux:ux
+      - ux:ux
     ports:
       - "80:80"
 #      - "443:443"
