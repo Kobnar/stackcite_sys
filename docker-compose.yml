@@ -1,0 +1,30 @@
+version: '2'
+services:
+
+  mongo:
+    image: mongo
+
+  api:
+    build: ./src/api
+    image: stackcite/api
+    depends_on:
+      - mongo
+
+#  ux:
+#    build: ./src/ux
+#    image: stackcite/ux
+#    depends_on:
+#      - stackcite_api
+
+  nginx:
+    build: ./src/sys/nginx
+    image: stackcite/nginx
+    depends_on:
+      - api
+#      - ux
+    links:
+      - api:api
+#      - ux:ux
+    ports:
+      - "80:80"
+#      - "443:443"
