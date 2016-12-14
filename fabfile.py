@@ -1,5 +1,5 @@
 import os
-from fabric.api import env, run, put, cd
+from fabric.api import warn_only, env, run, put, cd
 from fabric.contrib.files import exists
 
 
@@ -15,10 +15,10 @@ env.port = 22
 # Global constants
 
 
-_DB_REPO = 'https://github.com/Kobnar/stackcite_db.git'
-_API_REPO = 'https://github.com/Kobnar/stackcite_api.git'
-_UX_REPO = 'https://github.com/Kobnar/stackcite_ux.git'
-_SYS_REPO = 'https://github.com/Kobnar/stackcite_sys.git'
+_DB_URI = 'https://github.com/Kobnar/stackcite_db.git'
+_API_URI = 'https://github.com/Kobnar/stackcite_api.git'
+_UX_URI = 'https://github.com/Kobnar/stackcite_ux.git'
+_SYS_URI = 'https://github.com/Kobnar/stackcite_sys.git'
 _DEPENDENCIES = ()
 
 
@@ -85,25 +85,36 @@ def start_docker():
 # Container management
 
 
-def clone_db():
+def _link_docker_compose_config(source):
+    destination = '~/docker-compose.yml'
+    if exists(destination):
+        run('rm {}'.format(destination))
+    run('ln -s {} ~/docker-compose.yml'.format(source))
+
+
+def _clone_repo(url, dest):
     mkdir('~/src')
-    run('git clone -b dev {} ~/src/db'.format(_DB_REPO))
+    with warn_only():
+        result = run('git clone -b dev {} ~/src/{}'.format(url, dest))
+    if result.return_code == 128:
+        run('git --git-dir=src/{}/.git pull'.format(dest))
+
+
+def clone_db():
+    _clone_repo(_DB_URI, 'db')
 
 
 def clone_api():
-    mkdir('~/src')
-    run('git clone -b dev {} ~/src/api'.format(_API_REPO))
+    _clone_repo(_API_URI, 'api')
 
 
 def clone_ux():
-    mkdir('~/src')
-    run('git clone -b dev {} ~/src/ux'.format(_UX_REPO))
+    _clone_repo(_UX_URI, 'ux')
 
 
 def clone_sys():
-    mkdir('~/src')
-    run('git clone -b dev {} ~/src/sys'.format(_SYS_REPO))
-    run('ln -s ~/src/sys/docker-compose.yml ~/docker-compose.yml')
+    _clone_repo(_SYS_URI, 'sys')
+    _link_docker_compose_config('~/src/sys/docker-compose.yml')
 
 
 def clone_all():
