@@ -1,5 +1,5 @@
 import os
-from fabric.api import warn_only, env, run, put, cd
+from fabric.api import env, run
 from fabric.contrib.files import exists
 
 
@@ -92,7 +92,7 @@ def _link_docker_compose_config(source):
     run('ln -s {} ~/docker-compose.yml'.format(source))
 
 
-def _clone_repo(url, dest):
+def _get_repo(url, dest):
     mkdir('~/src')
     if exists('~/src/{}'.format(dest)):
         run('git --git-dir=src/{}/.git pull'.format(dest))
@@ -100,28 +100,28 @@ def _clone_repo(url, dest):
         run('git clone -b dev {} ~/src/{}'.format(url, dest))
 
 
-def clone_db():
-    _clone_repo(_DB_URI, 'db')
+def get_db():
+    _get_repo(_DB_URI, 'db')
 
 
-def clone_api():
-    _clone_repo(_API_URI, 'api')
+def get_api():
+    _get_repo(_API_URI, 'api')
 
 
-def clone_ux():
-    _clone_repo(_UX_URI, 'ux')
+def get_ux():
+    _get_repo(_UX_URI, 'ux')
 
 
-def clone_sys():
-    _clone_repo(_SYS_URI, 'sys')
+def get_sys():
+    _get_repo(_SYS_URI, 'sys')
     _link_docker_compose_config('~/src/sys/docker-compose.yml')
 
 
 def clone_all():
-    clone_db()
-    clone_api()
-    clone_ux()
-    clone_sys()
+    get_db()
+    get_api()
+    get_ux()
+    get_sys()
 
 
 def build():
