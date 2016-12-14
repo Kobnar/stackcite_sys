@@ -9,12 +9,16 @@ services:
     image: stackcite/api
     depends_on:
       - mongo
+    expose:
+      - "8080"
 
   ux:
     build: ./src/ux
     image: stackcite/ux
     depends_on:
       - api
+    expose:
+      - "3000"
 
   nginx:
     build: ./src/sys/nginx
