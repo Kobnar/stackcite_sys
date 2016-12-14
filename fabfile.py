@@ -19,6 +19,7 @@ _DB_REPO = 'https://github.com/Kobnar/stackcite_db.git'
 _API_REPO = 'https://github.com/Kobnar/stackcite_api.git'
 _UX_REPO = 'https://github.com/Kobnar/stackcite_ux.git'
 _SYS_REPO = 'https://github.com/Kobnar/stackcite_sys.git'
+_DEPENDENCIES = ()
 
 
 # System
@@ -40,6 +41,10 @@ def _upgrade_system():
 def update_system():
     _update_package_index()
     _upgrade_system()
+
+
+def install_deps():
+    run('sudo apt-get install -y {}'.format(' '.join(_DEPENDENCIES)))
 
 
 # Docker
@@ -98,7 +103,6 @@ def clone_ux():
 def clone_sys():
     mkdir('~/src')
     run('git clone -b dev {} ~/src/sys'.format(_SYS_REPO))
-    run('pip install ~/src/sys/requirements.txt')
     run('ln -s ~/src/sys/docker-compose.yml ~/docker-compose.yml')
 
 
