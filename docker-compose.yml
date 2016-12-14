@@ -14,7 +14,7 @@ services:
     build: ./src/ux
     image: stackcite/ux
     depends_on:
-      - stackcite_api
+      - api
     environment:
       - PORT=8080
 
