@@ -15,8 +15,6 @@ services:
     image: stackcite/ux
     depends_on:
       - api
-    environment:
-      - PORT=8080
 
   nginx:
     build: ./src/sys/nginx
