@@ -94,10 +94,10 @@ def _link_docker_compose_config(source):
 
 def _clone_repo(url, dest):
     mkdir('~/src')
-    with warn_only():
-        result = run('git clone -b dev {} ~/src/{}'.format(url, dest))
-    if result.return_code == 128:
+    if exists('~/src/{}'.format(dest)):
         run('git --git-dir=src/{}/.git pull'.format(dest))
+    else:
+        run('git clone -b dev {} ~/src/{}'.format(url, dest))
 
 
 def clone_db():
