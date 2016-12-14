@@ -117,7 +117,7 @@ def get_sys():
     _link_docker_compose_config('~/src/sys/docker-compose.yml')
 
 
-def clone_all():
+def get_all():
     get_db()
     get_api()
     get_ux()
